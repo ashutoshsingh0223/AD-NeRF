@@ -330,11 +330,16 @@ def create_nerf(args, ext, dim_aud, device_spec=torch.device('cuda', 0), with_au
     ##########################
 
     # Load checkpoints
-    if args.ft_path is not None and args.ft_path != 'None':
-        ckpts = [args.ft_path]
-    else:
-        ckpts = [os.path.join(basedir, expname, f) for f in natsorted(
-            os.listdir(os.path.join(basedir, expname))) if ext in f]
+#     if args.ft_path is not None and args.ft_path != 'None':
+#         ckpts = [args.ft_path]
+#     else:
+#         ckpts = [os.path.join(basedir, expname, f) for f in natsorted(
+#             os.listdir(os.path.join(basedir, expname))) if ext in f]
+        
+   if args.ft_path is not None and args.ft_path != 'None':
+        import glob
+        ckpts = sorted(glob.glob(f"{args.ft_path}/*.tar"))
+        ckpts = [ ckpt for ckpt in ckpts if ext in ckpt]
 
     print('Found ckpts', ckpts)
     learned_codes_dict = None
